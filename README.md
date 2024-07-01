@@ -14,17 +14,37 @@ This project currently has five major components
 
 First, install all dependencies:
 
-```bash
-npm install
-```
+1. Make sure you have [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed, as well as [make](https://stackoverflow.com/a/32127632) if you use Windows (Linux and MacOS distributives have it by default).
+2. Run `make init` in order to build and start an application.
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Then run the development server:
+### Dev commands list
 
-```bash
-npm run dev
-```
+- `make build` - builds everything needed for development.
+- `make up` - starts all containers.
+- `make down` - stops and removes all containers.
+- `make docker-down-all` - stops and removes all containers and also **_removes mounted volumes_** (be careful with this command as it deletes e.g. database or any other mounted folders/files).
+- `make restart` - restarts all containers.
+- `make init` - initialize everything from the scratch.
+- `make check` - check code for errors and runs tests.
+- `make npm-install` - runs `npm install` inside container.
+- `make npm-install-package p=package_name` - installs a npm package inside container (replace "package_name" with the target package name).
+- `make npm-remove-package p=package_name` - removes a npm package inside container (replace "package_name" with the target package name).
+- `make prisma-generate` - regenerates [prisma client](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/introduction#5-evolving-your-application). You need to do that whenever you make changes to your database that are reflected in the Prisma schema.
+- `make sh c=container_name` - opens a bash terminal inside "container_name" (this can be found within `docker compose ps -a`).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Testing
+
+- To make all checks (tests, lints) run `make check`.
+- In order to run only linter run `make lint`.
+- In order to run only all tests run `make test`.
+- To use more complex command you can just get inside container `make sh c=repair-app` and do your stuff.
+
+### Logs
+
+Error logs can be obtained from `/var/log/error.log` inside container (`make sh c=repair-app`).
+
+Application logs can be seen by running `make logs`.
 
 ### Debugging
 
@@ -66,6 +86,26 @@ Create a file named `.vscode/launch.json` at the root of your project with the f
 Now go to the Debug panel (Ctrl+Shift+D on Windows/Linux, ⇧+⌘+D on macOS), select a launch configuration, then press F5 or select Debug: Start Debugging from the Command Palette to start your debugging session.
 
 > Note: For `Repair: debug client-side` configuration you need to run `npm run dev` prio to a launch of this configuration.
+
+### Troubleshooting
+
+> If you have issues with a hot reload on Windows - add `.env.local` file to your root and put this line on it:
+
+```
+WATCHPACK_POLLING=true
+```
+
+Now, restar docker-compose with `make restart`.
+
+---
+
+> If you have an error
+
+```
+xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun
+```
+
+while running `make` command - you [need to install](https://apple.stackexchange.com/questions/254380/why-am-i-getting-an-invalid-active-developer-path-when-attempting-to-use-git-a) the `Xcode Command Line Tools` (run `xcode-select --install`) or reset it if has been already done (run `xcode-select --reset`).
 
 ## Learn More
 
