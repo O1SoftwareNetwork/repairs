@@ -149,4 +149,4 @@ In order to contribute:
 3. Add `O1SoftwareNetwork/repairs` repo as your remote - `git remote add upstream git@github.com:O1SoftwareNetwork/repairs.git`. After that, you can update your fork with the main repo easily with `git pull upstream`.
 4. Create a new feature branch (e.g. `fix/signup` or `add/assignment-page`) - `git checkout -b fix/signup`.
 5. After your job is done, commit and push your code into your repo feature branch - `git push origin fix/signup`. Make sure to push only to your forked repo.
-6. Create a pull request **from your fork repo** from your feature branch into master branch of [the main project repo](https://github.com/O1SoftwareNetwork/repairs).
+6. Create a pull request **from your fork repo** from your feature branch into dev branch of [the main project repo](https://github.com/O1SoftwareNetwork/repairs).
