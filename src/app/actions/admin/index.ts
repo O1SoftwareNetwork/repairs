@@ -1,8 +1,7 @@
 'use server';
 
-import path from 'path';
-import shapefile from 'shapefile';
-import { FeatureCollection, Feature } from 'geojson';
+import data from './geoJson.json';
+import { FeatureCollection, Feature, GeometryCollection } from 'geojson';
 
 export default async function getZipcodeDataFromDb() {
     // const zipcodeData = await db.zipcode.findAll();
@@ -21,17 +20,9 @@ export async function loadShapeFile(): Promise<FeatureCollection> {
       features: []
     };
   
-    try {
-        const source = await shapefile.open('./zipcodedata/cb_2018_us_zcta510_500k.shp');
-        
-        let result;
-        while (!(result = await source.read()).done) {
-            geoJson.features.push(result.value as Feature);
-        }
-    } catch (error) {
-      console.error('Error reading shapefile:', error);
-      throw error;
-    }
+    (data.geometries as GeometryCollection).forEach((geometry: Feature) => {
+      geoJson.features.push(geometry);
+    });
   
     return geoJson;
   }
